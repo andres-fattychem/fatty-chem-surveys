@@ -6,13 +6,16 @@
   <title>Fatty Chem · 1M lbs Survey</title>
   <style>
     :root {
-      --green: #2d7a4f;
-      --green-light: #e8f5ee;
-      --green-mid: #3e9b66;
-      --dark: #1a2e22;
+      --orange: #F7A800;
+      --orange-dark: #D99200;
+      --orange-light: #FFF8E6;
+      --orange-mid: #F9B830;
+      --dark: #111111;
+      --dark2: #1E1E1E;
+      --dark3: #2A2A2A;
       --gray: #6b7280;
-      --gray-light: #f3f4f6;
-      --border: #d1d5db;
+      --gray-light: #f5f5f5;
+      --border: #e5e7eb;
       --white: #ffffff;
       --red: #dc2626;
     }
@@ -21,16 +24,16 @@
 
     body {
       font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background: #f0f4f1;
+      background: #f5f4f0;
       color: #1f2937;
       min-height: 100vh;
     }
 
     /* HERO HEADER */
     .hero {
-      background: linear-gradient(135deg, var(--dark) 0%, var(--green) 100%);
+      background: var(--dark);
       color: white;
-      padding: 48px 24px 56px;
+      padding: 28px 24px 36px;
       text-align: center;
       position: relative;
       overflow: hidden;
@@ -38,23 +41,31 @@
     .hero::before {
       content: '';
       position: absolute;
-      top: -60px; right: -60px;
-      width: 200px; height: 200px;
+      top: -80px; right: -80px;
+      width: 280px; height: 280px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.05);
+      background: rgba(247,168,0,0.07);
     }
     .hero::after {
       content: '';
       position: absolute;
-      bottom: -80px; left: -40px;
-      width: 240px; height: 240px;
+      bottom: -100px; left: -60px;
+      width: 300px; height: 300px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.04);
+      background: rgba(247,168,0,0.05);
     }
+
+    /* SUN LOGO SVG */
+    .hero-logo {
+      margin: 0 auto 14px;
+      width: 48px;
+      height: 48px;
+    }
+
     .hero-label {
       display: inline-block;
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(247,168,0,0.15);
+      border: 1px solid rgba(247,168,0,0.3);
       border-radius: 100px;
       padding: 4px 16px;
       font-size: 12px;
@@ -62,17 +73,20 @@
       letter-spacing: 0.08em;
       text-transform: uppercase;
       margin-bottom: 16px;
+      color: var(--orange);
     }
     .hero h1 {
-      font-size: clamp(28px, 5vw, 42px);
+      font-size: clamp(26px, 5vw, 40px);
       font-weight: 800;
       letter-spacing: -0.02em;
       margin-bottom: 12px;
+      color: white;
     }
+    .hero h1 span { color: var(--orange); }
     .hero p {
-      font-size: 16px;
-      opacity: 0.85;
-      max-width: 540px;
+      font-size: 15px;
+      color: rgba(255,255,255,0.7);
+      max-width: 520px;
       margin: 0 auto 28px;
       line-height: 1.6;
     }
@@ -86,17 +100,17 @@
       display: flex;
       justify-content: space-between;
       font-size: 13px;
-      opacity: 0.8;
+      color: rgba(255,255,255,0.6);
       margin-bottom: 8px;
     }
     .progress-track {
-      background: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.12);
       border-radius: 100px;
       height: 10px;
       overflow: hidden;
     }
     .progress-fill {
-      background: #6ee7a0;
+      background: var(--orange);
       height: 100%;
       width: 80%;
       border-radius: 100px;
@@ -122,13 +136,13 @@
     .section-card {
       background: white;
       border-radius: 16px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.06);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.05);
       margin-bottom: 20px;
       overflow: hidden;
     }
     .section-header {
-      background: var(--green-light);
-      border-bottom: 1px solid #c9e8d5;
+      background: var(--orange-light);
+      border-bottom: 1px solid #F0DFA0;
       padding: 16px 24px;
       display: flex;
       align-items: center;
@@ -136,7 +150,7 @@
     }
     .section-icon {
       width: 32px; height: 32px;
-      background: var(--green);
+      background: var(--orange);
       border-radius: 8px;
       display: flex; align-items: center; justify-content: center;
       font-size: 16px;
@@ -145,13 +159,13 @@
     .section-title {
       font-size: 13px;
       font-weight: 700;
-      color: var(--green);
+      color: #92600A;
       text-transform: uppercase;
       letter-spacing: 0.07em;
     }
     .section-subtitle {
       font-size: 12px;
-      color: var(--gray);
+      color: #A07020;
       margin-top: 1px;
     }
     .section-body {
@@ -169,10 +183,7 @@
       color: #374151;
       margin-bottom: 8px;
     }
-    .field label .required {
-      color: var(--red);
-      margin-left: 2px;
-    }
+    .field label .required { color: var(--red); margin-left: 2px; }
     .field input[type="text"],
     .field textarea {
       width: 100%;
@@ -188,12 +199,12 @@
     .field input[type="text"]:focus,
     .field textarea:focus {
       outline: none;
-      border-color: var(--green-mid);
-      box-shadow: 0 0 0 3px rgba(61,155,102,0.12);
+      border-color: var(--orange);
+      box-shadow: 0 0 0 3px rgba(247,168,0,0.15);
     }
     .field textarea { min-height: 90px; }
 
-    /* CHECKBOX GROUP */
+    /* CHECKBOX / RADIO GROUP */
     .checkbox-group {
       display: flex;
       flex-direction: column;
@@ -209,30 +220,19 @@
       cursor: pointer;
       transition: all 0.15s;
     }
-    .checkbox-item:hover { border-color: var(--green-mid); background: var(--green-light); }
+    .checkbox-item:hover { border-color: var(--orange); background: var(--orange-light); }
     .checkbox-item input[type="radio"],
     .checkbox-item input[type="checkbox"] {
       width: 18px; height: 18px;
-      accent-color: var(--green);
+      accent-color: var(--orange);
       cursor: pointer;
       flex-shrink: 0;
     }
-    .checkbox-item span {
-      font-size: 14px;
-      color: #374151;
-      font-weight: 500;
-    }
-    .checkbox-item.selected {
-      border-color: var(--green);
-      background: var(--green-light);
-    }
+    .checkbox-item span { font-size: 14px; color: #374151; font-weight: 500; }
+    .checkbox-item.selected { border-color: var(--orange); background: var(--orange-light); }
 
     /* RATING SCALE */
-    .rating-scale {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
+    .rating-scale { display: flex; gap: 8px; flex-wrap: wrap; }
     .rating-btn {
       flex: 1;
       min-width: 48px;
@@ -247,12 +247,8 @@
       transition: all 0.15s;
       text-align: center;
     }
-    .rating-btn:hover { border-color: var(--green-mid); background: var(--green-light); }
-    .rating-btn.selected {
-      border-color: var(--green);
-      background: var(--green);
-      color: white;
-    }
+    .rating-btn:hover { border-color: var(--orange); background: var(--orange-light); }
+    .rating-btn.selected { border-color: var(--orange); background: var(--orange); color: white; }
     .rating-labels {
       display: flex;
       justify-content: space-between;
@@ -262,11 +258,11 @@
       padding: 0 2px;
     }
 
-    /* SUBMIT SECTION */
+    /* SUBMIT */
     .submit-card {
       background: white;
       border-radius: 16px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.06);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.05);
       padding: 28px 24px;
       text-align: center;
     }
@@ -274,40 +270,32 @@
       font-size: 13px;
       color: var(--gray);
       margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
     }
     .submit-btn {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: linear-gradient(135deg, var(--green) 0%, var(--green-mid) 100%);
-      color: white;
+      background: var(--orange);
+      color: var(--dark);
       border: none;
       border-radius: 12px;
       padding: 16px 40px;
       font-size: 16px;
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
       transition: opacity 0.15s, transform 0.1s;
-      box-shadow: 0 4px 14px rgba(45,122,79,0.35);
+      box-shadow: 0 4px 14px rgba(247,168,0,0.4);
     }
-    .submit-btn:hover { opacity: 0.92; transform: translateY(-1px); }
+    .submit-btn:hover { opacity: 0.9; transform: translateY(-1px); }
     .submit-btn:active { transform: translateY(0); }
     .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
-    /* SUCCESS STATE */
-    .success-screen {
-      display: none;
-      text-align: center;
-      padding: 60px 24px;
-    }
+    /* SUCCESS */
+    .success-screen { display: none; text-align: center; padding: 60px 24px; }
     .success-screen.visible { display: block; }
     .success-icon {
       width: 72px; height: 72px;
-      background: var(--green-light);
+      background: var(--orange-light);
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       font-size: 36px;
@@ -317,16 +305,8 @@
     .success-screen p { color: var(--gray); font-size: 15px; line-height: 1.6; }
 
     /* ERROR */
-    .error-msg {
-      font-size: 12px;
-      color: var(--red);
-      margin-top: 5px;
-      display: none;
-    }
-    .field.has-error input,
-    .field.has-error textarea {
-      border-color: var(--red);
-    }
+    .error-msg { font-size: 12px; color: var(--red); margin-top: 5px; display: none; }
+    .field.has-error input, .field.has-error textarea { border-color: var(--red); }
     .field.has-error .error-msg { display: block; }
 
     /* FOOTER */
@@ -348,8 +328,12 @@
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-label">Fatty Chem · 2026</div>
-  <h1>Help us reach<br>1,000,000 lbs/month</h1>
+  <div class="hero-logo">
+    <img src="https://andres-fattychem.github.io/fatty-chem-surveys/C.I.%20FC_Principal-01.png" alt="Fatty Chem" style="width:100%;height:100%;object-fit:contain;" />
+  </div>
+
+  <div class="hero-label">Fatty Chem Byproducts · 2026</div>
+  <h1>Help us reach<br><span>1,000,000 lbs/month</span></h1>
   <p>We're 200K lbs away from the milestone. Your perspective matters — this survey helps us get there together.</p>
   <div class="progress-bar-wrap">
     <div class="progress-labels">
@@ -365,7 +349,6 @@
 <!-- FORM -->
 <div class="form-container">
   <form id="surveyForm" novalidate>
-    <!-- Hidden token field - populated from URL -->
     <input type="hidden" id="token" name="token" />
 
     <!-- SECTION 1: ABOUT YOU -->
@@ -386,26 +369,11 @@
         <div class="field" id="field-team">
           <label>Which team do you work on? <span class="required">*</span></label>
           <div class="checkbox-group" id="teamGroup">
-            <label class="checkbox-item">
-              <input type="radio" name="team" value="Routes / Collection" />
-              <span>Routes / Collection</span>
-            </label>
-            <label class="checkbox-item">
-              <input type="radio" name="team" value="Sales" />
-              <span>Sales</span>
-            </label>
-            <label class="checkbox-item">
-              <input type="radio" name="team" value="Administration / Office" />
-              <span>Administration / Office</span>
-            </label>
-            <label class="checkbox-item">
-              <input type="radio" name="team" value="Logistics" />
-              <span>Logistics</span>
-            </label>
-            <label class="checkbox-item">
-              <input type="radio" name="team" value="Operations" />
-              <span>Operations</span>
-            </label>
+            <label class="checkbox-item"><input type="radio" name="team" value="Routes / Collection" /><span>Routes / Collection</span></label>
+            <label class="checkbox-item"><input type="radio" name="team" value="Sales" /><span>Sales</span></label>
+            <label class="checkbox-item"><input type="radio" name="team" value="Administration / Office" /><span>Administration / Office</span></label>
+            <label class="checkbox-item"><input type="radio" name="team" value="Logistics" /><span>Logistics</span></label>
+            <label class="checkbox-item"><input type="radio" name="team" value="Operations" /><span>Operations</span></label>
           </div>
           <div class="error-msg">Please select your team.</div>
         </div>
@@ -436,10 +404,7 @@
             <button type="button" class="rating-btn" data-value="4">4</button>
             <button type="button" class="rating-btn" data-value="5">5</button>
           </div>
-          <div class="rating-labels">
-            <span>1 = Not very committed</span>
-            <span>5 = Fully committed</span>
-          </div>
+          <div class="rating-labels"><span>1 = Not very committed</span><span>5 = Fully committed</span></div>
           <input type="hidden" name="commitment" id="input-commitment" />
           <div class="error-msg">Please select a rating.</div>
         </div>
@@ -531,10 +496,7 @@
             <button type="button" class="rating-btn" data-value="4">4</button>
             <button type="button" class="rating-btn" data-value="5">5</button>
           </div>
-          <div class="rating-labels">
-            <span>1 = Needs a lot of work</span>
-            <span>5 = Excellent</span>
-          </div>
+          <div class="rating-labels"><span>1 = Needs a lot of work</span><span>5 = Excellent</span></div>
           <input type="hidden" name="teamwork" id="input-teamwork" />
           <div class="error-msg">Please select a rating.</div>
         </div>
@@ -554,22 +516,10 @@
         <div class="field" id="field-belief">
           <label>Do you believe we can reach 1M lbs? <span class="required">*</span></label>
           <div class="checkbox-group">
-            <label class="checkbox-item">
-              <input type="radio" name="belief" value="Yes, 100%" />
-              <span>Yes, 100%</span>
-            </label>
-            <label class="checkbox-item">
-              <input type="radio" name="belief" value="I think so, if we work well together" />
-              <span>I think so, if we work well together</span>
-            </label>
-            <label class="checkbox-item">
-              <input type="radio" name="belief" value="Tough but possible" />
-              <span>Tough but possible</span>
-            </label>
-            <label class="checkbox-item">
-              <input type="radio" name="belief" value="I have doubts" />
-              <span>I have doubts</span>
-            </label>
+            <label class="checkbox-item"><input type="radio" name="belief" value="Yes, 100%" /><span>Yes, 100%</span></label>
+            <label class="checkbox-item"><input type="radio" name="belief" value="I think so, if we work well together" /><span>I think so, if we work well together</span></label>
+            <label class="checkbox-item"><input type="radio" name="belief" value="Tough but possible" /><span>Tough but possible</span></label>
+            <label class="checkbox-item"><input type="radio" name="belief" value="I have doubts" /><span>I have doubts</span></label>
           </div>
           <div class="error-msg">Please select an option.</div>
         </div>
@@ -605,20 +555,17 @@
   </div>
 </div>
 
-<footer>Fatty Chem &nbsp;·&nbsp; Confidential &nbsp;·&nbsp; Thank you for your time</footer>
+<footer>
+  <svg style="vertical-align:middle;margin-right:6px;" width="16" height="16" viewBox="0 0 100 100"><circle cx="50" cy="42" r="14" fill="#F7A800"/><g fill="#F7A800"><rect x="47" y="5" width="5" height="13" rx="2.5"/><rect x="47" y="72" width="5" height="13" rx="2.5" transform="rotate(180 49.5 78.5)"/><rect x="74" y="39" width="5" height="13" rx="2.5" transform="rotate(90 76.5 45.5)"/><rect x="8" y="39" width="5" height="13" rx="2.5" transform="rotate(270 10.5 45.5)"/><rect x="66" y="13" width="5" height="13" rx="2.5" transform="rotate(45 68.5 19.5)"/><rect x="18" y="61" width="5" height="13" rx="2.5" transform="rotate(225 20.5 67.5)"/><rect x="66" y="61" width="5" height="13" rx="2.5" transform="rotate(135 68.5 67.5)"/><rect x="18" y="13" width="5" height="13" rx="2.5" transform="rotate(315 20.5 19.5)"/></g></svg>
+  fattychem® byproducts &nbsp;·&nbsp; Confidential &nbsp;·&nbsp; Thank you for your time
+</footer>
 
 <script>
-  // ─── CONFIG ──────────────────────────────────────────────────────────────────
-  // REPLACE THIS with your deployed Google Apps Script Web App URL
   const SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
-  // ─────────────────────────────────────────────────────────────────────────────
 
-  // Read token from URL (?token=abc123)
   const urlParams = new URLSearchParams(window.location.search);
-  const token = urlParams.get('token') || '';
-  document.getElementById('token').value = token;
+  document.getElementById('token').value = urlParams.get('token') || '';
 
-  // Rating buttons
   function setupRating(groupId, inputId, fieldId) {
     const btns = document.querySelectorAll(`#${groupId} .rating-btn`);
     const input = document.getElementById(inputId);
@@ -634,74 +581,49 @@
   setupRating('rating-commitment', 'input-commitment', 'commitment');
   setupRating('rating-teamwork', 'input-teamwork', 'teamwork');
 
-  // Highlight selected radio items
   document.querySelectorAll('.checkbox-item input[type="radio"]').forEach(radio => {
     radio.addEventListener('change', () => {
       const group = radio.closest('.checkbox-group');
       group.querySelectorAll('.checkbox-item').forEach(item => item.classList.remove('selected'));
       radio.closest('.checkbox-item').classList.add('selected');
-      // clear error
       const field = radio.closest('.field');
       if (field) field.classList.remove('has-error');
     });
   });
 
-  // Form submission
   document.getElementById('surveyForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-
     let valid = true;
 
-    // Validate required text fields
-    const requiredTexts = ['name', 'meaning', 'action', 'challenge', 'needs'];
-    requiredTexts.forEach(name => {
+    ['name','meaning','action','challenge','needs'].forEach(name => {
       const input = document.querySelector(`[name="${name}"]`);
       const field = document.getElementById(`field-${name}`);
-      if (!input.value.trim()) {
-        field.classList.add('has-error');
-        valid = false;
-      } else {
-        field.classList.remove('has-error');
-      }
+      if (!input.value.trim()) { field.classList.add('has-error'); valid = false; }
+      else field.classList.remove('has-error');
     });
 
-    // Validate radio fields
-    const requiredRadios = ['team', 'belief'];
-    requiredRadios.forEach(name => {
+    ['team','belief'].forEach(name => {
       const checked = document.querySelector(`[name="${name}"]:checked`);
       const field = document.getElementById(`field-${name}`);
-      if (!checked) {
-        field.classList.add('has-error');
-        valid = false;
-      } else {
-        field.classList.remove('has-error');
-      }
+      if (!checked) { field.classList.add('has-error'); valid = false; }
+      else field.classList.remove('has-error');
     });
 
-    // Validate ratings
-    ['commitment', 'teamwork'].forEach(name => {
+    ['commitment','teamwork'].forEach(name => {
       const input = document.getElementById(`input-${name}`);
       const field = document.getElementById(`field-${name}`);
-      if (!input.value) {
-        field.classList.add('has-error');
-        valid = false;
-      } else {
-        field.classList.remove('has-error');
-      }
+      if (!input.value) { field.classList.add('has-error'); valid = false; }
+      else field.classList.remove('has-error');
     });
 
-    if (!valid) {
-      document.querySelector('.has-error').scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
-    }
+    if (!valid) { document.querySelector('.has-error').scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
 
     const btn = document.getElementById('submitBtn');
-    const btnText = document.getElementById('submitText');
     btn.disabled = true;
-    btnText.textContent = 'Submitting...';
+    document.getElementById('submitText').textContent = 'Submitting...';
 
     const data = {
-      token,
+      token: document.getElementById('token').value,
       name: document.querySelector('[name="name"]').value.trim(),
       team: document.querySelector('[name="team"]:checked').value,
       meaning: document.querySelector('[name="meaning"]').value.trim(),
@@ -719,24 +641,19 @@
     };
 
     try {
-      const resp = await fetch(SCRIPT_URL, {
-        method: 'POST',
-        body: JSON.stringify({ action: 'submitSurvey', data }),
-      });
+      const resp = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'submitSurvey', data }) });
       const result = await resp.json();
       if (result.success) {
         document.getElementById('surveyForm').style.display = 'none';
         document.getElementById('successScreen').classList.add('visible');
         window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
-        throw new Error(result.message || 'Submission failed');
-      }
+      } else throw new Error(result.message);
     } catch (err) {
       const errDiv = document.getElementById('submitError');
       errDiv.textContent = 'Something went wrong. Please try again or contact Angela.';
       errDiv.style.display = 'block';
       btn.disabled = false;
-      btnText.textContent = 'Submit My Survey';
+      document.getElementById('submitText').textContent = 'Submit My Survey';
     }
   });
 </script>

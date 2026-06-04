@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fatty Chem · Survey Admin</title>
+  <style>
+    :root {
+      --green: #2d7a4f;
+      --green-light: #e8f5ee;
+      --green-mid: #3e9b66;
+      --dark: #1a2e22;
+      --gray: #6b7280;
+      --gray-light: #f9fafb;
+      --border: #e5e7eb;
+      --white: #ffffff;
+      --red: #dc2626;
+      --red-light: #fef2f2;
+      --yellow: #d97706;
+      --yellow-light: #fffbeb;
+      --blue: #2563eb;
+      --blue-light: #eff6ff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #f0f4f1; color: #1f2937; }
+
+    /* LOGIN */
+    .login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .login-card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+      padding: 40px 36px;
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+    }
+    .login-logo {
+      width: 56px; height: 56px;
+      background: linear-gradient(135deg, var(--dark), var(--green));
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px;
+      margin: 0 auto 20px;
+    }
+    .login-card h1 { font-size: 22px; font-weight: 800; color: var(--dark); margin-bottom: 4px; }
+    .login-card p { font-size: 14px; color: var(--gray); margin-bottom: 28px; }
+    .login-input {
+      width: 100%;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 15px;
+      font-family: inherit;
+      margin-bottom: 12px;
+      transition: border-color 0.15s;
+    }
+    .login-input:focus { outline: none; border-color: var(--green-mid); }
+    .login-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--dark), var(--green));
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 13px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 4px;
+    }
+    .login-btn:hover { opacity: 0.9; }
+    .login-error { color: var(--red); font-size: 13px; margin-top: 10px; display: none; }
+
+    /* MAIN APP */
+    .app { display: none; min-height: 100vh; }
+
+    /* SIDEBAR */
+    .layout { display: flex; min-height: 100vh; }
+    .sidebar {
+      width: 240px;
+      background: var(--dark);
+      color: white;
+      padding: 24px 0;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar-logo {
+      padding: 0 20px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 16px;
+    }
+    .sidebar-logo .brand { font-size: 16px; font-weight: 800; }
+    .sidebar-logo .sub { font-size: 12px; opacity: 0.5; margin-top: 2px; }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.65);
+      cursor: pointer;
+      border-radius: 0;
+      transition: all 0.15s;
+      border-left: 3px solid transparent;
+    }
+    .nav-item:hover { color: white; background: rgba(255,255,255,0.06); }
+    .nav-item.active { color: white; background: rgba(255,255,255,0.1); border-left-color: #6ee7a0; }
+    .nav-icon { font-size: 16px; width: 20px; text-align: center; }
+    .sidebar-footer {
+      margin-top: auto;
+      padding: 16px 20px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* MAIN CONTENT */
+    .main { flex: 1; overflow: auto; }
+    .topbar {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 16px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .topbar-title { font-size: 18px; font-weight: 700; color: var(--dark); }
+    .topbar-actions { display: flex; gap: 10px; align-items: center; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      border: none; border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 13px; font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .btn:hover { opacity: 0.85; }
+    .btn-primary { background: var(--green); color: white; }
+    .btn-secondary { background: var(--gray-light); color: #374151; border: 1px solid var(--border); }
+    .btn-danger { background: var(--red-light); color: var(--red); }
+    .btn-sm { padding: 5px 10px; font-size: 12px; }
+
+    /* PAGE CONTENT */
+    .page { padding: 24px 28px; display: none; }
+    .page.active { display: block; }
+
+    /* STATS ROW */
+    .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
+    .stat-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .stat-label { font-size: 12px; font-weight: 600; color: var(--gray); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+    .stat-value { font-size: 32px; font-weight: 800; color: var(--dark); }
+    .stat-sub { font-size: 12px; color: var(--gray); margin-top: 4px; }
+
+    /* TABLE */
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .card-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-title { font-size: 14px; font-weight: 700; color: var(--dark); }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--gray);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 10px 16px;
+      background: var(--gray-light);
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 12px 16px;
+      font-size: 13px;
+      color: #374151;
+      border-bottom: 1px solid #f3f4f6;
+      vertical-align: middle;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #fafafa; }
+
+    /* BADGES */
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .badge-sent { background: var(--blue-light); color: var(--blue); }
+    .badge-completed { background: var(--green-light); color: var(--green); }
+    .badge-pending { background: var(--yellow-light); color: var(--yellow); }
+    .badge-unsent { background: #f3f4f6; color: var(--gray); }
+
+    /* ADD EMPLOYEE MODAL */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 16px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: white;
+      border-radius: 16px;
+      padding: 28px;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    .modal h2 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+    .modal p { font-size: 13px; color: var(--gray); margin-bottom: 20px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 5px; }
+    .form-group input, .form-group select {
+      width: 100%;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 9px 12px;
+      font-size: 13px;
+      font-family: inherit;
+    }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--green-mid); }
+    .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+
+    /* SEND MODAL */
+    .survey-link-box {
+      background: var(--gray-light);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12px;
+      font-family: monospace;
+      color: #374151;
+      word-break: break-all;
+      margin: 12px 0;
+    }
+
+    /* RESULTS PAGE */
+    .result-row {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      background: white;
+    }
+    .result-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .result-name { font-weight: 700; font-size: 15px; }
+    .result-field { margin-bottom: 10px; }
+    .result-field .q { font-size: 11px; font-weight: 600; color: var(--gray); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px; }
+    .result-field .a { font-size: 13px; color: #1f2937; line-height: 1.5; }
+    .rating-display {
+      display: inline-flex; gap: 4px;
+    }
+    .rating-pip {
+      width: 24px; height: 24px;
+      border-radius: 6px;
+      background: var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: var(--gray);
+    }
+    .rating-pip.filled { background: var(--green); color: white; }
+
+    /* EMPTY STATE */
+    .empty-state { text-align: center; padding: 48px 24px; color: var(--gray); }
+    .empty-state .icon { font-size: 40px; margin-bottom: 12px; }
+    .empty-state p { font-size: 14px; }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      background: var(--dark);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      z-index: 200;
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all 0.25s;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    @media (max-width: 680px) {
+      .sidebar { width: 64px; }
+      .nav-item span, .sidebar-logo .brand, .sidebar-logo .sub, .sidebar-footer { display: none; }
+      .nav-item { justify-content: center; padding: 12px; }
+      .nav-icon { width: auto; }
+      .page { padding: 16px; }
+      .topbar { padding: 12px 16px; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">🌿</div>
+    <h1>Survey Admin</h1>
+    <p>Fatty Chem · 1M Goal 2026</p>
+    <input type="password" class="login-input" id="passwordInput" placeholder="Admin password" />
+    <button class="login-btn" onclick="doLogin()">Sign In →</button>
+    <div class="login-error" id="loginError">Incorrect password. Try again.</div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div class="app" id="appScreen">
+  <div class="layout">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <div class="brand">🌿 Fatty Chem</div>
+        <div class="sub">Survey Admin</div>
+      </div>
+      <div class="nav-item active" onclick="showPage('dashboard')" id="nav-dashboard">
+        <span class="nav-icon">📊</span><span>Dashboard</span>
+      </div>
+      <div class="nav-item" onclick="showPage('employees')" id="nav-employees">
+        <span class="nav-icon">👥</span><span>Employees</span>
+      </div>
+      <div class="nav-item" onclick="showPage('results')" id="nav-results">
+        <span class="nav-icon">📋</span><span>Results</span>
+      </div>
+      <div class="nav-item" onclick="showPage('settings')" id="nav-settings">
+        <span class="nav-icon">⚙️</span><span>Settings</span>
+      </div>
+      <div class="sidebar-footer">Logged in as Angela</div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+      <div class="topbar">
+        <div class="topbar-title" id="topbarTitle">Dashboard</div>
+        <div class="topbar-actions">
+          <button class="btn btn-secondary btn-sm" onclick="loadData()">↻ Refresh</button>
+          <button class="btn btn-primary btn-sm" onclick="openSendModal()">+ Send Survey</button>
+        </div>
+      </div>
+
+      <!-- DASHBOARD PAGE -->
+      <div class="page active" id="page-dashboard">
+        <div class="stats-row" id="statsRow">
+          <div class="stat-card">
+            <div class="stat-label">Total Employees</div>
+            <div class="stat-value" id="statTotal">—</div>
+            <div class="stat-sub">in the survey list</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Surveys Sent</div>
+            <div class="stat-value" id="statSent">—</div>
+            <div class="stat-sub">invitations delivered</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Responses</div>
+            <div class="stat-value" id="statCompleted">—</div>
+            <div class="stat-sub">surveys completed</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Response Rate</div>
+            <div class="stat-value" id="statRate">—</div>
+            <div class="stat-sub">of sent surveys</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Recent Activity</div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Employee</th>
+                <th>Team</th>
+                <th>Status</th>
+                <th>Sent</th>
+                <th>Completed</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="dashboardTableBody">
+              <tr><td colspan="6"><div class="empty-state"><div class="icon">⏳</div><p>Loading...</p></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- EMPLOYEES PAGE -->
+      <div class="page" id="page-employees">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Employee List</div>
+            <button class="btn btn-primary btn-sm" onclick="openAddModal()">+ Add Employee</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Team</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="employeeTableBody">
+              <tr><td colspan="5"><div class="empty-state"><div class="icon">👥</div><p>No employees added yet.</p></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- RESULTS PAGE -->
+      <div class="page" id="page-results">
+        <div id="resultsContainer">
+          <div class="empty-state"><div class="icon">📋</div><p>No responses yet.</p></div>
+        </div>
+      </div>
+
+      <!-- SETTINGS PAGE -->
+      <div class="page" id="page-settings">
+        <div class="card" style="max-width: 520px;">
+          <div class="card-header"><div class="card-title">Configuration</div></div>
+          <div style="padding: 20px; display: flex; flex-direction: column; gap: 16px;">
+            <div class="form-group">
+              <label>Google Apps Script URL</label>
+              <input type="text" id="settingScriptUrl" placeholder="https://script.google.com/macros/s/.../exec" />
+            </div>
+            <div class="form-group">
+              <label>Survey Base URL (where survey.html is hosted)</label>
+              <input type="text" id="settingSurveyUrl" placeholder="https://yoursite.com/survey.html" />
+            </div>
+            <div class="form-group">
+              <label>Admin Password (current session only)</label>
+              <input type="password" id="settingPassword" placeholder="Enter new password" />
+            </div>
+            <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
+            <p style="font-size:12px; color: var(--gray); margin-top: -4px;">Settings are saved in your browser. The script URL and survey URL are required for sending emails and generating links.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD EMPLOYEE MODAL -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <h2>Add Employee</h2>
+    <p>Add an employee to the survey list.</p>
+    <div class="form-row">
+      <div class="form-group">
+        <label>First Name</label>
+        <input type="text" id="addFirstName" placeholder="Maria" />
+      </div>
+      <div class="form-group">
+        <label>Last Name</label>
+        <input type="text" id="addLastName" placeholder="Lopez" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" id="addEmail" placeholder="maria@fatty-chem.com" />
+    </div>
+    <div class="form-group">
+      <label>Team</label>
+      <select id="addTeam">
+        <option value="">Select team...</option>
+        <option>Routes / Collection</option>
+        <option>Sales</option>
+        <option>Administration / Office</option>
+        <option>Logistics</option>
+        <option>Operations</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('addModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="addEmployee()">Add Employee</button>
+    </div>
+  </div>
+</div>
+
+<!-- SEND SURVEY MODAL -->
+<div class="modal-overlay" id="sendModal">
+  <div class="modal">
+    <h2>Send Survey</h2>
+    <p>Choose who to send the 1M Goal survey to.</p>
+    <div class="form-group">
+      <label>Recipient</label>
+      <select id="sendRecipient">
+        <option value="all">All employees (not yet sent)</option>
+        <option value="all_force">All employees (resend to everyone)</option>
+        <option value="individual">Specific employee...</option>
+      </select>
+    </div>
+    <div class="form-group" id="sendIndividualGroup" style="display:none;">
+      <label>Select Employee</label>
+      <select id="sendIndividual"></select>
+    </div>
+    <div id="sendPreview" style="font-size:13px; color: var(--gray); margin-top: 8px;"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('sendModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="sendSurveys()">Send Now ✉️</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // ─── CONFIG ──────────────────────────────────────────────────────────────────
+  // These are loaded from localStorage; configure them in the Settings page
+  let SCRIPT_URL = localStorage.getItem('fc_script_url') || '';
+  let SURVEY_URL = localStorage.getItem('fc_survey_url') || window.location.href.replace('admin.html', 'survey.html');
+  let ADMIN_PASSWORD = localStorage.getItem('fc_admin_pass') || 'fattychem2026';
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  // Local employee store (also synced to backend)
+  let employees = JSON.parse(localStorage.getItem('fc_employees') || '[]');
+  let responses = [];
+
+  // ── LOGIN ────────────────────────────────────────────────────────────────────
+  document.getElementById('passwordInput').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+  function doLogin() {
+    const pw = document.getElementById('passwordInput').value;
+    if (pw === ADMIN_PASSWORD) {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('appScreen').style.display = 'block';
+      loadData();
+      loadSettings();
+    } else {
+      document.getElementById('loginError').style.display = 'block';
+    }
+  }
+
+  // ── NAVIGATION ───────────────────────────────────────────────────────────────
+  function showPage(name) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    document.getElementById('nav-' + name).classList.add('active');
+    const titles = { dashboard: 'Dashboard', employees: 'Employees', results: 'Results', settings: 'Settings' };
+    document.getElementById('topbarTitle').textContent = titles[name];
+    if (name === 'results') renderResults();
+    if (name === 'employees') renderEmployeeTable();
+  }
+
+  // ── DATA LOADING ─────────────────────────────────────────────────────────────
+  async function loadData() {
+    if (!SCRIPT_URL) { renderDashboard(); return; }
+    try {
+      const res = await fetch(`${SCRIPT_URL}?action=getStatus`);
+      const data = await res.json();
+      if (data.employees) {
+        // Merge server data with local
+        employees = data.employees;
+        localStorage.setItem('fc_employees', JSON.stringify(employees));
+      }
+      if (data.responses) responses = data.responses;
+    } catch (e) { /* offline mode */ }
+    renderDashboard();
+    renderEmployeeTable();
+  }
+
+  function renderDashboard() {
+    const total = employees.length;
+    const sent = employees.filter(e => e.sentAt).length;
+    const completed = employees.filter(e => e.completedAt).length;
+    const rate = sent > 0 ? Math.round((completed / sent) * 100) + '%' : '—';
+
+    document.getElementById('statTotal').textContent = total || '—';
+    document.getElementById('statSent').textContent = sent || '—';
+    document.getElementById('statCompleted').textContent = completed || '—';
+    document.getElementById('statRate').textContent = rate;
+
+    const tbody = document.getElementById('dashboardTableBody');
+    if (employees.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="icon">👥</div><p>No employees yet. Add them in the Employees tab.</p></div></td></tr>`;
+      return;
+    }
+    tbody.innerHTML = employees.map(emp => `
+      <tr>
+        <td><strong>${emp.name}</strong></td>
+        <td>${emp.team || '—'}</td>
+        <td>${statusBadge(emp)}</td>
+        <td>${emp.sentAt ? fmtDate(emp.sentAt) : '—'}</td>
+        <td>${emp.completedAt ? fmtDate(emp.completedAt) : '—'}</td>
+        <td>
+          ${!emp.completedAt ? `<button class="btn btn-secondary btn-sm" onclick="sendToOne('${emp.id}')">Resend</button>` : ''}
+          ${emp.sentAt && !emp.completedAt ? `<button class="btn btn-secondary btn-sm" onclick="copyLink('${emp.id}')">📋 Link</button>` : ''}
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function renderEmployeeTable() {
+    const tbody = document.getElementById('employeeTableBody');
+    if (employees.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><div class="icon">👥</div><p>No employees added yet.</p></div></td></tr>`;
+      return;
+    }
+    tbody.innerHTML = employees.map(emp => `
+      <tr>
+        <td><strong>${emp.name}</strong></td>
+        <td>${emp.email}</td>
+        <td>${emp.team || '—'}</td>
+        <td>${statusBadge(emp)}</td>
+        <td>
+          <button class="btn btn-secondary btn-sm" onclick="sendToOne('${emp.id}')">Send</button>
+          <button class="btn btn-danger btn-sm" onclick="removeEmployee('${emp.id}')">Remove</button>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function renderResults() {
+    const container = document.getElementById('resultsContainer');
+    const completed = employees.filter(e => e.completedAt);
+    if (completed.length === 0 && responses.length === 0) {
+      container.innerHTML = `<div class="empty-state"><div class="icon">📋</div><p>No responses yet. Responses will appear here once employees complete the survey.</p></div>`;
+      return;
+    }
+
+    // Use responses array if available, otherwise use completed employees placeholder
+    const items = responses.length > 0 ? responses : completed.map(e => ({ name: e.name, team: e.team, submittedAt: e.completedAt }));
+
+    container.innerHTML = items.map(r => `
+      <div class="result-row">
+        <div class="result-meta">
+          <span class="result-name">${r.name || '—'}</span>
+          <span class="badge badge-completed">✓ Completed</span>
+          <span style="font-size:12px;color:var(--gray);">${r.team || ''}</span>
+          <span style="font-size:12px;color:var(--gray);margin-left:auto;">${r.submittedAt ? fmtDate(r.submittedAt) : ''}</span>
+        </div>
+        ${r.commitment ? `
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;flex-wrap:wrap;">
+          <div class="result-field">
+            <div class="q">Commitment to goal</div>
+            <div class="a">${ratingDisplay(r.commitment)}</div>
+          </div>
+          <div class="result-field">
+            <div class="q">Communication & teamwork</div>
+            <div class="a">${ratingDisplay(r.teamwork)}</div>
+          </div>
+        </div>
+        <div class="result-field"><div class="q">Believes we can reach 1M?</div><div class="a">${r.belief || '—'}</div></div>
+        <div class="result-field"><div class="q">What it means to them</div><div class="a">${r.meaning || '—'}</div></div>
+        <div class="result-field"><div class="q">Action plan</div><div class="a">${r.action || '—'}</div></div>
+        <div class="result-field"><div class="q">Biggest challenge</div><div class="a">${r.challenge || '—'}</div></div>
+        <div class="result-field"><div class="q">What they need</div><div class="a">${r.needs || '—'}</div></div>
+        ${r.ideas ? `<div class="result-field"><div class="q">Ideas</div><div class="a">${r.ideas}</div></div>` : ''}
+        ${r.celebration ? `<div class="result-field"><div class="q">Celebration idea 🎉</div><div class="a">${r.celebration}</div></div>` : ''}
+        ` : `<div style="color:var(--gray);font-size:13px;">Full response data available in Google Sheets.</div>`}
+      </div>
+    `).join('');
+  }
+
+  // ── EMPLOYEE MANAGEMENT ──────────────────────────────────────────────────────
+  function openAddModal() { document.getElementById('addModal').classList.add('open'); }
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+  async function addEmployee() {
+    const first = document.getElementById('addFirstName').value.trim();
+    const last = document.getElementById('addLastName').value.trim();
+    const email = document.getElementById('addEmail').value.trim();
+    const team = document.getElementById('addTeam').value;
+    if (!first || !email) { showToast('Please fill in name and email.'); return; }
+
+    const emp = {
+      id: 'emp_' + Date.now(),
+      name: `${first} ${last}`.trim(),
+      email,
+      team,
+      sentAt: null,
+      completedAt: null,
+    };
+    employees.push(emp);
+    localStorage.setItem('fc_employees', JSON.stringify(employees));
+
+    // Sync to backend
+    if (SCRIPT_URL) {
+      try {
+        await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'addEmployee', employee: emp }) });
+      } catch(e) {}
+    }
+
+    closeModal('addModal');
+    document.getElementById('addFirstName').value = '';
+    document.getElementById('addLastName').value = '';
+    document.getElementById('addEmail').value = '';
+    document.getElementById('addTeam').value = '';
+    renderEmployeeTable();
+    renderDashboard();
+    showToast(`${emp.name} added.`);
+  }
+
+  async function removeEmployee(id) {
+    if (!confirm('Remove this employee from the list?')) return;
+    employees = employees.filter(e => e.id !== id);
+    localStorage.setItem('fc_employees', JSON.stringify(employees));
+    renderEmployeeTable();
+    renderDashboard();
+    showToast('Employee removed.');
+  }
+
+  // ── SENDING ──────────────────────────────────────────────────────────────────
+  function openSendModal() {
+    const sel = document.getElementById('sendIndividual');
+    sel.innerHTML = employees.map(e => `<option value="${e.id}">${e.name} (${e.email})</option>`).join('');
+    document.getElementById('sendModal').classList.add('open');
+    updateSendPreview();
+  }
+
+  document.getElementById('sendRecipient').addEventListener('change', function() {
+    document.getElementById('sendIndividualGroup').style.display = this.value === 'individual' ? 'block' : 'none';
+    updateSendPreview();
+  });
+
+  function updateSendPreview() {
+    const val = document.getElementById('sendRecipient').value;
+    const preview = document.getElementById('sendPreview');
+    if (val === 'all') {
+      const unsent = employees.filter(e => !e.sentAt).length;
+      preview.textContent = `Will send to ${unsent} employee(s) who haven't received the survey yet.`;
+    } else if (val === 'all_force') {
+      preview.textContent = `Will resend to all ${employees.length} employees.`;
+    } else {
+      preview.textContent = 'Will send to the selected employee.';
+    }
+  }
+
+  async function sendSurveys() {
+    if (!SCRIPT_URL) {
+      showToast('Please configure the Script URL in Settings first.');
+      closeModal('sendModal');
+      showPage('settings');
+      return;
+    }
+
+    const val = document.getElementById('sendRecipient').value;
+    let targets = [];
+    if (val === 'all') targets = employees.filter(e => !e.sentAt);
+    else if (val === 'all_force') targets = employees;
+    else {
+      const id = document.getElementById('sendIndividual').value;
+      targets = employees.filter(e => e.id === id);
+    }
+
+    if (targets.length === 0) { showToast('No employees to send to.'); return; }
+
+    closeModal('sendModal');
+    showToast(`Sending to ${targets.length} employee(s)...`);
+
+    try {
+      const res = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'sendSurveys', surveyUrl: SURVEY_URL, employeeIds: targets.map(e => e.id) }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        targets.forEach(emp => {
+          const idx = employees.findIndex(e => e.id === emp.id);
+          if (idx > -1) employees[idx].sentAt = new Date().toISOString();
+        });
+        localStorage.setItem('fc_employees', JSON.stringify(employees));
+        renderDashboard();
+        renderEmployeeTable();
+        showToast(`✓ Sent to ${targets.length} employee(s)!`);
+      } else {
+        showToast('Error: ' + (data.message || 'Send failed'));
+      }
+    } catch(e) {
+      showToast('Network error. Check your script URL.');
+    }
+  }
+
+  async function sendToOne(id) {
+    if (!SCRIPT_URL) { showPage('settings'); return; }
+    const emp = employees.find(e => e.id === id);
+    if (!emp) return;
+    try {
+      const res = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'sendSurveys', surveyUrl: SURVEY_URL, employeeIds: [id] }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        emp.sentAt = new Date().toISOString();
+        localStorage.setItem('fc_employees', JSON.stringify(employees));
+        renderDashboard();
+        renderEmployeeTable();
+        showToast(`Survey sent to ${emp.name}`);
+      }
+    } catch(e) { showToast('Send failed.'); }
+  }
+
+  function copyLink(id) {
+    const link = `${SURVEY_URL}?token=${id}`;
+    navigator.clipboard.writeText(link).then(() => showToast('Link copied to clipboard!'));
+  }
+
+  // ── SETTINGS ─────────────────────────────────────────────────────────────────
+  function loadSettings() {
+    document.getElementById('settingScriptUrl').value = localStorage.getItem('fc_script_url') || '';
+    document.getElementById('settingSurveyUrl').value = localStorage.getItem('fc_survey_url') || SURVEY_URL;
+  }
+  function saveSettings() {
+    SCRIPT_URL = document.getElementById('settingScriptUrl').value.trim();
+    SURVEY_URL = document.getElementById('settingSurveyUrl').value.trim();
+    const newPw = document.getElementById('settingPassword').value;
+    if (newPw) { ADMIN_PASSWORD = newPw; localStorage.setItem('fc_admin_pass', newPw); }
+    localStorage.setItem('fc_script_url', SCRIPT_URL);
+    localStorage.setItem('fc_survey_url', SURVEY_URL);
+    showToast('Settings saved.');
+  }
+
+  // ── HELPERS ──────────────────────────────────────────────────────────────────
+  function statusBadge(emp) {
+    if (emp.completedAt) return `<span class="badge badge-completed">✓ Completed</span>`;
+    if (emp.sentAt) return `<span class="badge badge-sent">✉ Sent</span>`;
+    return `<span class="badge badge-unsent">Not sent</span>`;
+  }
+
+  function fmtDate(iso) {
+    const d = new Date(iso);
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  function ratingDisplay(val) {
+    const n = parseInt(val) || 0;
+    return `<div class="rating-display">${[1,2,3,4,5].map(i => `<div class="rating-pip${i<=n?' filled':''}">${i}</div>`).join('')}</div>`;
+  }
+
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  // Close modals on overlay click
+  document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('open'); });
+  });
+</script>
+</body>
+</html>

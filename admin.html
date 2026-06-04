@@ -6,23 +6,25 @@
   <title>Fatty Chem · Survey Admin</title>
   <style>
     :root {
-      --green: #2d7a4f;
-      --green-light: #e8f5ee;
-      --green-mid: #3e9b66;
-      --dark: #1a2e22;
+      --orange: #F7A800;
+      --orange-dark: #D99200;
+      --orange-light: #FFF8E6;
+      --dark: #111111;
+      --dark2: #1C1C1C;
+      --dark3: #2A2A2A;
       --gray: #6b7280;
       --gray-light: #f9fafb;
       --border: #e5e7eb;
       --white: #ffffff;
       --red: #dc2626;
       --red-light: #fef2f2;
-      --yellow: #d97706;
-      --yellow-light: #fffbeb;
+      --green: #16a34a;
+      --green-light: #f0fdf4;
       --blue: #2563eb;
       --blue-light: #eff6ff;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #f0f4f1; color: #1f2937; }
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #f5f4f0; color: #1f2937; }
 
     /* LOGIN */
     .login-screen {
@@ -30,58 +32,59 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      background: var(--dark);
       padding: 24px;
     }
     .login-card {
-      background: white;
+      background: var(--dark2);
+      border: 1px solid var(--dark3);
       border-radius: 20px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.1);
       padding: 40px 36px;
       width: 100%;
       max-width: 380px;
       text-align: center;
     }
     .login-logo {
-      width: 56px; height: 56px;
-      background: linear-gradient(135deg, var(--dark), var(--green));
-      border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 26px;
       margin: 0 auto 20px;
+      width: 130px; height: 130px;
     }
-    .login-card h1 { font-size: 22px; font-weight: 800; color: var(--dark); margin-bottom: 4px; }
-    .login-card p { font-size: 14px; color: var(--gray); margin-bottom: 28px; }
+    .login-card h1 { font-size: 22px; font-weight: 800; color: white; margin-bottom: 4px; }
+    .login-card .sub { font-size: 14px; color: rgba(255,255,255,0.4); margin-bottom: 28px; }
     .login-input {
       width: 100%;
-      border: 1.5px solid var(--border);
+      background: var(--dark3);
+      border: 1.5px solid #3A3A3A;
       border-radius: 10px;
       padding: 12px 14px;
       font-size: 15px;
       font-family: inherit;
+      color: white;
       margin-bottom: 12px;
       transition: border-color 0.15s;
     }
-    .login-input:focus { outline: none; border-color: var(--green-mid); }
+    .login-input:focus { outline: none; border-color: var(--orange); }
+    .login-input::placeholder { color: rgba(255,255,255,0.3); }
     .login-btn {
       width: 100%;
-      background: linear-gradient(135deg, var(--dark), var(--green));
-      color: white;
+      background: var(--orange);
+      color: var(--dark);
       border: none;
       border-radius: 10px;
       padding: 13px;
       font-size: 15px;
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
       margin-top: 4px;
+      transition: opacity 0.15s;
     }
     .login-btn:hover { opacity: 0.9; }
-    .login-error { color: var(--red); font-size: 13px; margin-top: 10px; display: none; }
+    .login-error { color: #f87171; font-size: 13px; margin-top: 10px; display: none; }
 
     /* MAIN APP */
     .app { display: none; min-height: 100vh; }
+    .layout { display: flex; min-height: 100vh; }
 
     /* SIDEBAR */
-    .layout { display: flex; min-height: 100vh; }
     .sidebar {
       width: 240px;
       background: var(--dark);
@@ -93,11 +96,15 @@
     }
     .sidebar-logo {
       padding: 0 20px 24px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
       margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-    .sidebar-logo .brand { font-size: 16px; font-weight: 800; }
-    .sidebar-logo .sub { font-size: 12px; opacity: 0.5; margin-top: 2px; }
+    .sidebar-logo svg { flex-shrink: 0; }
+    .sidebar-logo .brand { font-size: 15px; font-weight: 800; color: white; }
+    .sidebar-logo .sub { font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 1px; letter-spacing: 0.06em; text-transform: uppercase; }
     .nav-item {
       display: flex;
       align-items: center;
@@ -105,21 +112,20 @@
       padding: 10px 20px;
       font-size: 14px;
       font-weight: 500;
-      color: rgba(255,255,255,0.65);
+      color: rgba(255,255,255,0.5);
       cursor: pointer;
-      border-radius: 0;
       transition: all 0.15s;
       border-left: 3px solid transparent;
     }
-    .nav-item:hover { color: white; background: rgba(255,255,255,0.06); }
-    .nav-item.active { color: white; background: rgba(255,255,255,0.1); border-left-color: #6ee7a0; }
+    .nav-item:hover { color: white; background: rgba(255,255,255,0.05); }
+    .nav-item.active { color: white; background: rgba(247,168,0,0.1); border-left-color: var(--orange); }
     .nav-icon { font-size: 16px; width: 20px; text-align: center; }
     .sidebar-footer {
       margin-top: auto;
       padding: 16px 20px;
-      border-top: 1px solid rgba(255,255,255,0.1);
+      border-top: 1px solid rgba(255,255,255,0.08);
       font-size: 12px;
-      color: rgba(255,255,255,0.4);
+      color: rgba(255,255,255,0.3);
     }
 
     /* MAIN CONTENT */
@@ -143,59 +149,52 @@
       transition: opacity 0.15s;
     }
     .btn:hover { opacity: 0.85; }
-    .btn-primary { background: var(--green); color: white; }
+    .btn-primary { background: var(--orange); color: var(--dark); font-weight: 800; }
     .btn-secondary { background: var(--gray-light); color: #374151; border: 1px solid var(--border); }
     .btn-danger { background: var(--red-light); color: var(--red); }
     .btn-sm { padding: 5px 10px; font-size: 12px; }
 
-    /* PAGE CONTENT */
+    /* PAGES */
     .page { padding: 24px 28px; display: none; }
     .page.active { display: block; }
 
-    /* STATS ROW */
+    /* STATS */
     .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
     .stat-card {
       background: white;
       border-radius: 12px;
       padding: 20px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
+    .stat-card.highlight { background: var(--dark); }
+    .stat-card.highlight .stat-label { color: rgba(255,255,255,0.5); }
+    .stat-card.highlight .stat-value { color: var(--orange); }
+    .stat-card.highlight .stat-sub { color: rgba(255,255,255,0.3); }
     .stat-label { font-size: 12px; font-weight: 600; color: var(--gray); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
     .stat-value { font-size: 32px; font-weight: 800; color: var(--dark); }
     .stat-sub { font-size: 12px; color: var(--gray); margin-top: 4px; }
 
     /* TABLE */
-    .card {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-      overflow: hidden;
-      margin-bottom: 20px;
-    }
+    .card { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); overflow: hidden; margin-bottom: 20px; }
     .card-header {
       padding: 16px 20px;
       border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      display: flex; align-items: center; justify-content: space-between;
     }
     .card-title { font-size: 14px; font-weight: 700; color: var(--dark); }
     table { width: 100%; border-collapse: collapse; }
     th {
       text-align: left;
-      font-size: 11px;
-      font-weight: 700;
+      font-size: 11px; font-weight: 700;
       color: var(--gray);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
+      text-transform: uppercase; letter-spacing: 0.06em;
       padding: 10px 16px;
       background: var(--gray-light);
       border-bottom: 1px solid var(--border);
     }
     td {
       padding: 12px 16px;
-      font-size: 13px;
-      color: #374151;
+      font-size: 13px; color: #374151;
       border-bottom: 1px solid #f3f4f6;
       vertical-align: middle;
     }
@@ -207,31 +206,23 @@
       display: inline-flex; align-items: center; gap: 4px;
       padding: 3px 10px;
       border-radius: 100px;
-      font-size: 11px;
-      font-weight: 600;
+      font-size: 11px; font-weight: 600;
     }
     .badge-sent { background: var(--blue-light); color: var(--blue); }
-    .badge-completed { background: var(--green-light); color: var(--green); }
-    .badge-pending { background: var(--yellow-light); color: var(--yellow); }
+    .badge-completed { background: var(--orange-light); color: #92600A; }
     .badge-unsent { background: #f3f4f6; color: var(--gray); }
 
-    /* ADD EMPLOYEE MODAL */
+    /* MODALS */
     .modal-overlay {
       position: fixed; inset: 0;
-      background: rgba(0,0,0,0.4);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
-      padding: 16px;
+      background: rgba(0,0,0,0.5);
+      display: none; align-items: center; justify-content: center;
+      z-index: 100; padding: 16px;
     }
     .modal-overlay.open { display: flex; }
     .modal {
-      background: white;
-      border-radius: 16px;
-      padding: 28px;
-      width: 100%;
-      max-width: 480px;
+      background: white; border-radius: 16px;
+      padding: 28px; width: 100%; max-width: 480px;
       box-shadow: 0 20px 60px rgba(0,0,0,0.2);
     }
     .modal h2 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
@@ -246,24 +237,12 @@
       padding: 9px 12px;
       font-size: 13px;
       font-family: inherit;
+      transition: border-color 0.15s;
     }
-    .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--green-mid); }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--orange); }
     .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
 
-    /* SEND MODAL */
-    .survey-link-box {
-      background: var(--gray-light);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 14px;
-      font-size: 12px;
-      font-family: monospace;
-      color: #374151;
-      word-break: break-all;
-      margin: 12px 0;
-    }
-
-    /* RESULTS PAGE */
+    /* RESULTS */
     .result-row {
       border: 1px solid var(--border);
       border-radius: 10px;
@@ -271,20 +250,12 @@
       margin-bottom: 12px;
       background: white;
     }
-    .result-meta {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
-    }
+    .result-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
     .result-name { font-weight: 700; font-size: 15px; }
     .result-field { margin-bottom: 10px; }
     .result-field .q { font-size: 11px; font-weight: 600; color: var(--gray); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px; }
     .result-field .a { font-size: 13px; color: #1f2937; line-height: 1.5; }
-    .rating-display {
-      display: inline-flex; gap: 4px;
-    }
+    .rating-display { display: inline-flex; gap: 4px; }
     .rating-pip {
       width: 24px; height: 24px;
       border-radius: 6px;
@@ -292,7 +263,7 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 11px; font-weight: 700; color: var(--gray);
     }
-    .rating-pip.filled { background: var(--green); color: white; }
+    .rating-pip.filled { background: var(--orange); color: var(--dark); }
 
     /* EMPTY STATE */
     .empty-state { text-align: center; padding: 48px 24px; color: var(--gray); }
@@ -301,18 +272,15 @@
 
     /* TOAST */
     .toast {
-      position: fixed;
-      bottom: 24px; right: 24px;
+      position: fixed; bottom: 24px; right: 24px;
       background: var(--dark);
+      border: 1px solid var(--dark3);
       color: white;
       padding: 12px 20px;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 500;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      border-radius: 10px; font-size: 14px; font-weight: 500;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
       z-index: 200;
-      transform: translateY(80px);
-      opacity: 0;
+      transform: translateY(80px); opacity: 0;
       transition: all 0.25s;
     }
     .toast.show { transform: translateY(0); opacity: 1; }
@@ -321,7 +289,6 @@
       .sidebar { width: 64px; }
       .nav-item span, .sidebar-logo .brand, .sidebar-logo .sub, .sidebar-footer { display: none; }
       .nav-item { justify-content: center; padding: 12px; }
-      .nav-icon { width: auto; }
       .page { padding: 16px; }
       .topbar { padding: 12px 16px; }
       .form-row { grid-template-columns: 1fr; }
@@ -330,12 +297,14 @@
 </head>
 <body>
 
-<!-- LOGIN SCREEN -->
+<!-- LOGIN -->
 <div class="login-screen" id="loginScreen">
   <div class="login-card">
-    <div class="login-logo">🌿</div>
+    <div class="login-logo">
+      <img src="https://andres-fattychem.github.io/fatty-chem-surveys/C.I.%20FC_Principal-01.png" alt="Fatty Chem" style="width:100%;height:100%;object-fit:contain;" />
+    </div>
     <h1>Survey Admin</h1>
-    <p>Fatty Chem · 1M Goal 2026</p>
+    <div class="sub">fattychem® byproducts · 1M Goal 2026</div>
     <input type="password" class="login-input" id="passwordInput" placeholder="Admin password" />
     <button class="login-btn" onclick="doLogin()">Sign In →</button>
     <div class="login-error" id="loginError">Incorrect password. Try again.</div>
@@ -348,8 +317,11 @@
     <!-- SIDEBAR -->
     <div class="sidebar">
       <div class="sidebar-logo">
-        <div class="brand">🌿 Fatty Chem</div>
-        <div class="sub">Survey Admin</div>
+        <img src="https://andres-fattychem.github.io/fatty-chem-surveys/C.I.%20FC_Principal-01.png" alt="Fatty Chem" style="width:28px;height:28px;object-fit:contain;" />
+        <div>
+          <div class="brand">fattychem®</div>
+          <div class="sub">Survey Admin</div>
+        </div>
       </div>
       <div class="nav-item active" onclick="showPage('dashboard')" id="nav-dashboard">
         <span class="nav-icon">📊</span><span>Dashboard</span>
@@ -372,7 +344,7 @@
         <div class="topbar-title" id="topbarTitle">Dashboard</div>
         <div class="topbar-actions">
           <button class="btn btn-secondary btn-sm" onclick="loadData()">↻ Refresh</button>
-          <button class="btn btn-primary btn-sm" onclick="openSendModal()">+ Send Survey</button>
+          <button class="btn btn-primary btn-sm" onclick="openSendModal()">✉ Send Survey</button>
         </div>
       </div>
 
@@ -389,7 +361,7 @@
             <div class="stat-value" id="statSent">—</div>
             <div class="stat-sub">invitations delivered</div>
           </div>
-          <div class="stat-card">
+          <div class="stat-card highlight">
             <div class="stat-label">Responses</div>
             <div class="stat-value" id="statCompleted">—</div>
             <div class="stat-sub">surveys completed</div>
@@ -403,7 +375,7 @@
 
         <div class="card">
           <div class="card-header">
-            <div class="card-title">Recent Activity</div>
+            <div class="card-title">Survey Tracker</div>
           </div>
           <table>
             <thead>
@@ -433,11 +405,7 @@
           <table>
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Team</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th>Name</th><th>Email</th><th>Team</th><th>Status</th><th>Actions</th>
               </tr>
             </thead>
             <tbody id="employeeTableBody">
@@ -456,23 +424,23 @@
 
       <!-- SETTINGS PAGE -->
       <div class="page" id="page-settings">
-        <div class="card" style="max-width: 520px;">
+        <div class="card" style="max-width:520px;">
           <div class="card-header"><div class="card-title">Configuration</div></div>
-          <div style="padding: 20px; display: flex; flex-direction: column; gap: 16px;">
+          <div style="padding:20px;display:flex;flex-direction:column;gap:16px;">
             <div class="form-group">
               <label>Google Apps Script URL</label>
               <input type="text" id="settingScriptUrl" placeholder="https://script.google.com/macros/s/.../exec" />
             </div>
             <div class="form-group">
-              <label>Survey Base URL (where survey.html is hosted)</label>
-              <input type="text" id="settingSurveyUrl" placeholder="https://yoursite.com/survey.html" />
+              <label>Survey Page URL</label>
+              <input type="text" id="settingSurveyUrl" placeholder="https://andres-fattychem.github.io/fatty-chem-surveys/survey.html" />
             </div>
             <div class="form-group">
               <label>Admin Password (current session only)</label>
               <input type="password" id="settingPassword" placeholder="Enter new password" />
             </div>
             <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
-            <p style="font-size:12px; color: var(--gray); margin-top: -4px;">Settings are saved in your browser. The script URL and survey URL are required for sending emails and generating links.</p>
+            <p style="font-size:12px;color:var(--gray);">Settings are saved locally in your browser.</p>
           </div>
         </div>
       </div>
@@ -484,21 +452,12 @@
 <div class="modal-overlay" id="addModal">
   <div class="modal">
     <h2>Add Employee</h2>
-    <p>Add an employee to the survey list.</p>
+    <p>Add someone to the survey list.</p>
     <div class="form-row">
-      <div class="form-group">
-        <label>First Name</label>
-        <input type="text" id="addFirstName" placeholder="Maria" />
-      </div>
-      <div class="form-group">
-        <label>Last Name</label>
-        <input type="text" id="addLastName" placeholder="Lopez" />
-      </div>
+      <div class="form-group"><label>First Name</label><input type="text" id="addFirstName" placeholder="Maria" /></div>
+      <div class="form-group"><label>Last Name</label><input type="text" id="addLastName" placeholder="Lopez" /></div>
     </div>
-    <div class="form-group">
-      <label>Email Address</label>
-      <input type="email" id="addEmail" placeholder="maria@fatty-chem.com" />
-    </div>
+    <div class="form-group"><label>Email Address</label><input type="email" id="addEmail" placeholder="maria@fatty-chem.com" /></div>
     <div class="form-group">
       <label>Team</label>
       <select id="addTeam">
@@ -520,13 +479,13 @@
 <!-- SEND SURVEY MODAL -->
 <div class="modal-overlay" id="sendModal">
   <div class="modal">
-    <h2>Send Survey</h2>
-    <p>Choose who to send the 1M Goal survey to.</p>
+    <h2>Send Survey ✉️</h2>
+    <p>Choose who receives the 1M Goal survey.</p>
     <div class="form-group">
       <label>Recipient</label>
-      <select id="sendRecipient">
+      <select id="sendRecipient" onchange="updateSendPreview()">
         <option value="all">All employees (not yet sent)</option>
-        <option value="all_force">All employees (resend to everyone)</option>
+        <option value="all_force">All employees (resend everyone)</option>
         <option value="individual">Specific employee...</option>
       </select>
     </div>
@@ -534,10 +493,10 @@
       <label>Select Employee</label>
       <select id="sendIndividual"></select>
     </div>
-    <div id="sendPreview" style="font-size:13px; color: var(--gray); margin-top: 8px;"></div>
+    <div id="sendPreview" style="font-size:13px;color:var(--gray);margin-top:8px;"></div>
     <div class="modal-actions">
       <button class="btn btn-secondary" onclick="closeModal('sendModal')">Cancel</button>
-      <button class="btn btn-primary" onclick="sendSurveys()">Send Now ✉️</button>
+      <button class="btn btn-primary" onclick="sendSurveys()">Send Now →</button>
     </div>
   </div>
 </div>
@@ -546,32 +505,26 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  // ─── CONFIG ──────────────────────────────────────────────────────────────────
-  // These are loaded from localStorage; configure them in the Settings page
   let SCRIPT_URL = localStorage.getItem('fc_script_url') || '';
   let SURVEY_URL = localStorage.getItem('fc_survey_url') || window.location.href.replace('admin.html', 'survey.html');
   let ADMIN_PASSWORD = localStorage.getItem('fc_admin_pass') || 'fattychem2026';
-  // ─────────────────────────────────────────────────────────────────────────────
 
-  // Local employee store (also synced to backend)
   let employees = JSON.parse(localStorage.getItem('fc_employees') || '[]');
   let responses = [];
 
-  // ── LOGIN ────────────────────────────────────────────────────────────────────
+  // LOGIN
   document.getElementById('passwordInput').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
   function doLogin() {
-    const pw = document.getElementById('passwordInput').value;
-    if (pw === ADMIN_PASSWORD) {
+    if (document.getElementById('passwordInput').value === ADMIN_PASSWORD) {
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('appScreen').style.display = 'block';
-      loadData();
-      loadSettings();
+      loadData(); loadSettings();
     } else {
       document.getElementById('loginError').style.display = 'block';
     }
   }
 
-  // ── NAVIGATION ───────────────────────────────────────────────────────────────
+  // NAVIGATION
   function showPage(name) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -583,21 +536,16 @@
     if (name === 'employees') renderEmployeeTable();
   }
 
-  // ── DATA LOADING ─────────────────────────────────────────────────────────────
+  // DATA
   async function loadData() {
     if (!SCRIPT_URL) { renderDashboard(); return; }
     try {
       const res = await fetch(`${SCRIPT_URL}?action=getStatus`);
       const data = await res.json();
-      if (data.employees) {
-        // Merge server data with local
-        employees = data.employees;
-        localStorage.setItem('fc_employees', JSON.stringify(employees));
-      }
+      if (data.employees) { employees = data.employees; localStorage.setItem('fc_employees', JSON.stringify(employees)); }
       if (data.responses) responses = data.responses;
-    } catch (e) { /* offline mode */ }
-    renderDashboard();
-    renderEmployeeTable();
+    } catch(e) {}
+    renderDashboard(); renderEmployeeTable();
   }
 
   function renderDashboard() {
@@ -605,14 +553,13 @@
     const sent = employees.filter(e => e.sentAt).length;
     const completed = employees.filter(e => e.completedAt).length;
     const rate = sent > 0 ? Math.round((completed / sent) * 100) + '%' : '—';
-
     document.getElementById('statTotal').textContent = total || '—';
     document.getElementById('statSent').textContent = sent || '—';
     document.getElementById('statCompleted').textContent = completed || '—';
     document.getElementById('statRate').textContent = rate;
 
     const tbody = document.getElementById('dashboardTableBody');
-    if (employees.length === 0) {
+    if (!employees.length) {
       tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="icon">👥</div><p>No employees yet. Add them in the Employees tab.</p></div></td></tr>`;
       return;
     }
@@ -633,7 +580,7 @@
 
   function renderEmployeeTable() {
     const tbody = document.getElementById('employeeTableBody');
-    if (employees.length === 0) {
+    if (!employees.length) {
       tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><div class="icon">👥</div><p>No employees added yet.</p></div></td></tr>`;
       return;
     }
@@ -654,14 +601,11 @@
   function renderResults() {
     const container = document.getElementById('resultsContainer');
     const completed = employees.filter(e => e.completedAt);
-    if (completed.length === 0 && responses.length === 0) {
-      container.innerHTML = `<div class="empty-state"><div class="icon">📋</div><p>No responses yet. Responses will appear here once employees complete the survey.</p></div>`;
+    if (!completed.length && !responses.length) {
+      container.innerHTML = `<div class="empty-state"><div class="icon">📋</div><p>No responses yet. They'll appear here once employees submit.</p></div>`;
       return;
     }
-
-    // Use responses array if available, otherwise use completed employees placeholder
     const items = responses.length > 0 ? responses : completed.map(e => ({ name: e.name, team: e.team, submittedAt: e.completedAt }));
-
     container.innerHTML = items.map(r => `
       <div class="result-row">
         <div class="result-meta">
@@ -671,15 +615,9 @@
           <span style="font-size:12px;color:var(--gray);margin-left:auto;">${r.submittedAt ? fmtDate(r.submittedAt) : ''}</span>
         </div>
         ${r.commitment ? `
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;flex-wrap:wrap;">
-          <div class="result-field">
-            <div class="q">Commitment to goal</div>
-            <div class="a">${ratingDisplay(r.commitment)}</div>
-          </div>
-          <div class="result-field">
-            <div class="q">Communication & teamwork</div>
-            <div class="a">${ratingDisplay(r.teamwork)}</div>
-          </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:12px;">
+          <div class="result-field"><div class="q">Commitment</div><div class="a">${ratingDisplay(r.commitment)}</div></div>
+          <div class="result-field"><div class="q">Teamwork</div><div class="a">${ratingDisplay(r.teamwork)}</div></div>
         </div>
         <div class="result-field"><div class="q">Believes we can reach 1M?</div><div class="a">${r.belief || '—'}</div></div>
         <div class="result-field"><div class="q">What it means to them</div><div class="a">${r.meaning || '—'}</div></div>
@@ -688,12 +626,12 @@
         <div class="result-field"><div class="q">What they need</div><div class="a">${r.needs || '—'}</div></div>
         ${r.ideas ? `<div class="result-field"><div class="q">Ideas</div><div class="a">${r.ideas}</div></div>` : ''}
         ${r.celebration ? `<div class="result-field"><div class="q">Celebration idea 🎉</div><div class="a">${r.celebration}</div></div>` : ''}
-        ` : `<div style="color:var(--gray);font-size:13px;">Full response data available in Google Sheets.</div>`}
+        ` : `<div style="color:var(--gray);font-size:13px;">Full response available in Google Sheets.</div>`}
       </div>
     `).join('');
   }
 
-  // ── EMPLOYEE MANAGEMENT ──────────────────────────────────────────────────────
+  // EMPLOYEES
   function openAddModal() { document.getElementById('addModal').classList.add('open'); }
   function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
@@ -704,47 +642,30 @@
     const team = document.getElementById('addTeam').value;
     if (!first || !email) { showToast('Please fill in name and email.'); return; }
 
-    const emp = {
-      id: 'emp_' + Date.now(),
-      name: `${first} ${last}`.trim(),
-      email,
-      team,
-      sentAt: null,
-      completedAt: null,
-    };
+    const emp = { id: 'emp_' + Date.now(), name: `${first} ${last}`.trim(), email, team, sentAt: null, completedAt: null };
     employees.push(emp);
     localStorage.setItem('fc_employees', JSON.stringify(employees));
-
-    // Sync to backend
     if (SCRIPT_URL) {
-      try {
-        await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'addEmployee', employee: emp }) });
-      } catch(e) {}
+      try { await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'addEmployee', employee: emp }) }); } catch(e) {}
     }
-
     closeModal('addModal');
-    document.getElementById('addFirstName').value = '';
-    document.getElementById('addLastName').value = '';
-    document.getElementById('addEmail').value = '';
+    ['addFirstName','addLastName','addEmail'].forEach(id => document.getElementById(id).value = '');
     document.getElementById('addTeam').value = '';
-    renderEmployeeTable();
-    renderDashboard();
+    renderEmployeeTable(); renderDashboard();
     showToast(`${emp.name} added.`);
   }
 
   async function removeEmployee(id) {
-    if (!confirm('Remove this employee from the list?')) return;
+    if (!confirm('Remove this employee?')) return;
     employees = employees.filter(e => e.id !== id);
     localStorage.setItem('fc_employees', JSON.stringify(employees));
-    renderEmployeeTable();
-    renderDashboard();
+    renderEmployeeTable(); renderDashboard();
     showToast('Employee removed.');
   }
 
-  // ── SENDING ──────────────────────────────────────────────────────────────────
+  // SENDING
   function openSendModal() {
-    const sel = document.getElementById('sendIndividual');
-    sel.innerHTML = employees.map(e => `<option value="${e.id}">${e.name} (${e.email})</option>`).join('');
+    document.getElementById('sendIndividual').innerHTML = employees.map(e => `<option value="${e.id}">${e.name} (${e.email})</option>`).join('');
     document.getElementById('sendModal').classList.add('open');
     updateSendPreview();
   }
@@ -757,59 +678,28 @@
   function updateSendPreview() {
     const val = document.getElementById('sendRecipient').value;
     const preview = document.getElementById('sendPreview');
-    if (val === 'all') {
-      const unsent = employees.filter(e => !e.sentAt).length;
-      preview.textContent = `Will send to ${unsent} employee(s) who haven't received the survey yet.`;
-    } else if (val === 'all_force') {
-      preview.textContent = `Will resend to all ${employees.length} employees.`;
-    } else {
-      preview.textContent = 'Will send to the selected employee.';
-    }
+    if (val === 'all') preview.textContent = `Will send to ${employees.filter(e => !e.sentAt).length} employee(s) not yet contacted.`;
+    else if (val === 'all_force') preview.textContent = `Will resend to all ${employees.length} employees.`;
+    else preview.textContent = 'Will send to the selected employee.';
   }
 
   async function sendSurveys() {
-    if (!SCRIPT_URL) {
-      showToast('Please configure the Script URL in Settings first.');
-      closeModal('sendModal');
-      showPage('settings');
-      return;
-    }
-
+    if (!SCRIPT_URL) { showToast('Configure Script URL in Settings first.'); closeModal('sendModal'); showPage('settings'); return; }
     const val = document.getElementById('sendRecipient').value;
-    let targets = [];
-    if (val === 'all') targets = employees.filter(e => !e.sentAt);
-    else if (val === 'all_force') targets = employees;
-    else {
-      const id = document.getElementById('sendIndividual').value;
-      targets = employees.filter(e => e.id === id);
-    }
-
-    if (targets.length === 0) { showToast('No employees to send to.'); return; }
-
+    let targets = val === 'all' ? employees.filter(e => !e.sentAt) : val === 'all_force' ? employees : employees.filter(e => e.id === document.getElementById('sendIndividual').value);
+    if (!targets.length) { showToast('No employees to send to.'); return; }
     closeModal('sendModal');
     showToast(`Sending to ${targets.length} employee(s)...`);
-
     try {
-      const res = await fetch(SCRIPT_URL, {
-        method: 'POST',
-        body: JSON.stringify({ action: 'sendSurveys', surveyUrl: SURVEY_URL, employeeIds: targets.map(e => e.id) }),
-      });
+      const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'sendSurveys', surveyUrl: SURVEY_URL, employeeIds: targets.map(e => e.id) }) });
       const data = await res.json();
       if (data.success) {
-        targets.forEach(emp => {
-          const idx = employees.findIndex(e => e.id === emp.id);
-          if (idx > -1) employees[idx].sentAt = new Date().toISOString();
-        });
+        targets.forEach(emp => { const idx = employees.findIndex(e => e.id === emp.id); if (idx > -1) employees[idx].sentAt = new Date().toISOString(); });
         localStorage.setItem('fc_employees', JSON.stringify(employees));
-        renderDashboard();
-        renderEmployeeTable();
+        renderDashboard(); renderEmployeeTable();
         showToast(`✓ Sent to ${targets.length} employee(s)!`);
-      } else {
-        showToast('Error: ' + (data.message || 'Send failed'));
-      }
-    } catch(e) {
-      showToast('Network error. Check your script URL.');
-    }
+      } else showToast('Error: ' + (data.message || 'Send failed'));
+    } catch(e) { showToast('Network error. Check your script URL.'); }
   }
 
   async function sendToOne(id) {
@@ -817,27 +707,22 @@
     const emp = employees.find(e => e.id === id);
     if (!emp) return;
     try {
-      const res = await fetch(SCRIPT_URL, {
-        method: 'POST',
-        body: JSON.stringify({ action: 'sendSurveys', surveyUrl: SURVEY_URL, employeeIds: [id] }),
-      });
+      const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'sendSurveys', surveyUrl: SURVEY_URL, employeeIds: [id] }) });
       const data = await res.json();
       if (data.success) {
         emp.sentAt = new Date().toISOString();
         localStorage.setItem('fc_employees', JSON.stringify(employees));
-        renderDashboard();
-        renderEmployeeTable();
+        renderDashboard(); renderEmployeeTable();
         showToast(`Survey sent to ${emp.name}`);
       }
     } catch(e) { showToast('Send failed.'); }
   }
 
   function copyLink(id) {
-    const link = `${SURVEY_URL}?token=${id}`;
-    navigator.clipboard.writeText(link).then(() => showToast('Link copied to clipboard!'));
+    navigator.clipboard.writeText(`${SURVEY_URL}?token=${id}`).then(() => showToast('Link copied!'));
   }
 
-  // ── SETTINGS ─────────────────────────────────────────────────────────────────
+  // SETTINGS
   function loadSettings() {
     document.getElementById('settingScriptUrl').value = localStorage.getItem('fc_script_url') || '';
     document.getElementById('settingSurveyUrl').value = localStorage.getItem('fc_survey_url') || SURVEY_URL;
@@ -852,36 +737,27 @@
     showToast('Settings saved.');
   }
 
-  // ── HELPERS ──────────────────────────────────────────────────────────────────
+  // HELPERS
   function statusBadge(emp) {
     if (emp.completedAt) return `<span class="badge badge-completed">✓ Completed</span>`;
     if (emp.sentAt) return `<span class="badge badge-sent">✉ Sent</span>`;
     return `<span class="badge badge-unsent">Not sent</span>`;
   }
-
   function fmtDate(iso) {
-    const d = new Date(iso);
-    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   }
-
   function ratingDisplay(val) {
     const n = parseInt(val) || 0;
     return `<div class="rating-display">${[1,2,3,4,5].map(i => `<div class="rating-pip${i<=n?' filled':''}">${i}</div>`).join('')}</div>`;
   }
-
   let toastTimer;
   function showToast(msg) {
     const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
+    t.textContent = msg; t.classList.add('show');
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
   }
-
-  // Close modals on overlay click
-  document.querySelectorAll('.modal-overlay').forEach(overlay => {
-    overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('open'); });
-  });
+  document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); }));
 </script>
 </body>
 </html>

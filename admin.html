@@ -505,8 +505,8 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  let SCRIPT_URL = localStorage.getItem('fc_script_url') || '';
-  let SURVEY_URL = localStorage.getItem('fc_survey_url') || window.location.href.replace('admin.html', 'survey.html');
+  let SCRIPT_URL = localStorage.getItem('fc_script_url') || 'https://script.google.com/macros/s/AKfycbxAmNiryznHrUgLyOFym8PazkT0cnMZbSMSRfDKrNu1Fsb4sSzN-8o98PSAXnAtXC_Q/exec';
+  let SURVEY_URL = localStorage.getItem('fc_survey_url') || 'https://andres-fattychem.github.io/fatty-chem-surveys/survey.html';
   let ADMIN_PASSWORD = localStorage.getItem('fc_admin_pass') || 'fattychem2026';
 
   let employees = JSON.parse(localStorage.getItem('fc_employees') || '[]');

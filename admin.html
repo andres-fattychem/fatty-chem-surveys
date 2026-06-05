@@ -691,14 +691,16 @@
     closeModal('sendModal');
     showToast(`Sending to ${targets.length} employee(s)...`);
     try {
-      const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'sendSurveys', surveyUrl: SURVEY_URL, employeeIds: targets.map(e => e.id), employeesData: targets }) });
-      const data = await res.json();
-      if (data.success) {
-        targets.forEach(emp => { const idx = employees.findIndex(e => e.id === emp.id); if (idx > -1) employees[idx].sentAt = new Date().toISOString(); });
-        localStorage.setItem('fc_employees', JSON.stringify(employees));
-        renderDashboard(); renderEmployeeTable();
-        showToast(`✓ Sent to ${targets.length} employee(s)!`);
-      } else showToast('Error: ' + (data.message || 'Send failed'));
+      const res = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: JSON.stringify({ action: 'sendSurveys', surveyUrl: SURVEY_URL, employeeIds: targets.map(e => e.id), employeesData: targets })
+      });
+      // no-cors means we can't read the response, so assume success
+      targets.forEach(emp => { const idx = employees.findIndex(e => e.id === emp.id); if (idx > -1) employees[idx].sentAt = new Date().toISOString(); });
+      localStorage.setItem('fc_employees', JSON.stringify(employees));
+      renderDashboard(); renderEmployeeTable();
+      showToast(`✓ Survey sent to ${targets.length} employee(s)! Check Apps Script logs to confirm.`);
     } catch(e) { showToast('Network error. Check your script URL.'); }
   }
 
@@ -707,14 +709,15 @@
     const emp = employees.find(e => e.id === id);
     if (!emp) return;
     try {
-      const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'sendSurveys', surveyUrl: SURVEY_URL, employeeIds: [id], employeesData: [emp] }) });
-      const data = await res.json();
-      if (data.success) {
-        emp.sentAt = new Date().toISOString();
-        localStorage.setItem('fc_employees', JSON.stringify(employees));
-        renderDashboard(); renderEmployeeTable();
-        showToast(`Survey sent to ${emp.name}`);
-      }
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: JSON.stringify({ action: 'sendSurveys', surveyUrl: SURVEY_URL, employeeIds: [id], employeesData: [emp] })
+      });
+      emp.sentAt = new Date().toISOString();
+      localStorage.setItem('fc_employees', JSON.stringify(employees));
+      renderDashboard(); renderEmployeeTable();
+      showToast(`Survey sent to ${emp.name}`);
     } catch(e) { showToast('Send failed.'); }
   }
 
